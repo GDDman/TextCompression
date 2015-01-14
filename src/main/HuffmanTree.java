@@ -6,14 +6,15 @@ import java.util.HashMap;
 public class HuffmanTree {
 	
 	private HashMap<Character, Integer> codes;
-	private ArrayList<HuffmanNode> tree = new ArrayList<HuffmanNode>();
+	private HuffmanNode root;
 
-	public HuffmanTree(ArrayList<HuffmanNode> probabilities) {
-		tree = probabilities;
+	public HuffmanTree() {
+		root = null;
+		codes = null;
 	}
 	
 	//returns the root node of the tree
-	public HuffmanNode generateTree() {
+	public HuffmanNode generateTree(ArrayList<HuffmanNode> tree) {
 		
 		while (tree.size() > 1) {
 		
