@@ -7,9 +7,10 @@ public class Compressor {
 
 	private FileReader fr;
 	private BufferedReader br;
-	private ArrayList<Character> text;
-	private ArrayList<Character> encodedtext;
+	private ArrayList<Character> text = new ArrayList<Character>();
+	private ArrayList<Character> encodedtext = new ArrayList<Character>();
 	
+	// read a text file and save the text as an array of characters (original)
 	public void read(String path){
 		
 		try {
@@ -26,7 +27,7 @@ public class Compressor {
 		
 		try {
 			while ((templine = br.readLine()) != null) {
-				currentline += (templine + "\n");
+				currentline = (templine + '\n');
 				char[] chars = currentline.toCharArray();
 				for (int i = 0; i < chars.length; i++) {
 					text.add(chars[i]);
@@ -38,15 +39,18 @@ public class Compressor {
 		
 	}
 	
+	// do sliding window encoding on original text 
 	public ArrayList<Character> swencode(ArrayList<Character> input, int windowsize, int searchlength) {	
 		return null;
 	}
 	
+	// do huffman encoding on the original text
 	public void huffman(String file_path) {
-		
+		HuffmanTree tree = new HuffmanTree();
+		tree.generateTree(getProbabilities());
 	}
 	
-	// returns array of leaf nodes
+	// returns array of leaf nodes for huffman encoding
 	public ArrayList<HuffmanNode> getProbabilities() {
 		
 		boolean charexists = false;
@@ -63,6 +67,27 @@ public class Compressor {
 		}
 		return leafnodes;
 	}
+	
+	public void writeToFile(String path, ArrayList<Character> content) {
+		
+		StringBuilder builder = new StringBuilder(content.size());
+		
+		for (Character c: content) {
+			builder.append(c);
+		}		
+		String output = builder.toString();
+		
+		try {
+			FileWriter fw = new FileWriter(path);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(output);
+			bw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	// GETTERS AND SETTERS
 	
 	public ArrayList<Character> getOriginal() {
 		return text;

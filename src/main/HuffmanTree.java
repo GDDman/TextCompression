@@ -2,11 +2,13 @@ package main;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class HuffmanTree {
 	
 	private HashMap<Character, Integer> codes;
 	private HuffmanNode root;
+	private List<HuffmanNode> leaves;
 
 	public HuffmanTree() {
 		root = null;
@@ -14,7 +16,9 @@ public class HuffmanTree {
 	}
 	
 	//returns the root node of the tree
-	public HuffmanNode generateTree(ArrayList<HuffmanNode> tree) {
+	public void generateTree(ArrayList<HuffmanNode> tree) {
+		
+		leaves = new ArrayList<HuffmanNode>(tree);
 		
 		while (tree.size() > 1) {
 		
@@ -44,12 +48,16 @@ public class HuffmanTree {
 			tree.add(parent);
 		}
 		
-		return tree.get(0);
+		root = tree.get(0);
 
 	}
 	
 	public HashMap generateCodes() {
 		return null;
+	}
+	
+	public HuffmanNode getRoot() {
+		return root;
 	}
 	
 }
