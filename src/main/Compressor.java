@@ -9,6 +9,7 @@ public class Compressor {
 	private BufferedReader br;
 	private ArrayList<Character> text = new ArrayList<Character>();
 	private ArrayList<Character> encodedtext = new ArrayList<Character>();
+	private HashMap<Character, ArrayList<Integer>> huffmancodes = null;
 	
 	// read a text file and save the text as an array of characters (original)
 	public void read(String path){
@@ -45,9 +46,10 @@ public class Compressor {
 	}
 	
 	// do huffman encoding on the original text
-	public void huffman(String file_path) {
+	public void huffman() {
 		HuffmanTree tree = new HuffmanTree();
 		tree.generateTree(getProbabilities());
+		huffmancodes = tree.generateCodes();
 	}
 	
 	// returns array of leaf nodes for huffman encoding
@@ -95,6 +97,10 @@ public class Compressor {
 	
 	public ArrayList<Character> getEncoded() {
 		return encodedtext;
+	}
+	
+	public HashMap<Character, ArrayList<Integer>> getHCodes() {
+		return huffmancodes;
 	}
 	
 }
