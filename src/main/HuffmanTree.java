@@ -29,11 +29,21 @@ public class HuffmanTree {
 				if (smallest == null) {
 					smallest = node;
 				}
-				if (node.getValue() <= smallest.getValue()) {
-					secondsmallest = smallest;
+				else if (node.getValue() <= smallest.getValue()) {
 					smallest = node;	
 				}
 			}
+			
+			for (HuffmanNode node: tree) {
+				if (node != smallest) {
+					if (secondsmallest == null) {
+						secondsmallest = node;
+					}
+					else if (node.getValue() <= secondsmallest.getValue()) {
+						secondsmallest = node;	
+					}	
+				}
+			}	
 			
 			HuffmanNode parent = new HuffmanNode(smallest.getValue() + secondsmallest.getValue());
 			smallest.setParent(parent);
@@ -63,7 +73,7 @@ public class HuffmanTree {
 				if (tempnode == parent.getright()) {
 					code.add(1);
 				}
-				else {
+				if (tempnode == parent.getleft()){
 					code.add(0);
 				}
 				tempnode = parent;
