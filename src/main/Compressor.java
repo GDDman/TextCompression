@@ -2,6 +2,7 @@ package main;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Compressor {
 
@@ -9,9 +10,9 @@ public class Compressor {
 	private BufferedReader br;
 	private ArrayList<Character> text = new ArrayList<Character>();
 	private ArrayList<Character> encodedtext = new ArrayList<Character>();
-	private HashMap<Character, ArrayList<Integer>> huffmancodes = null;
+	private HashMap<Character, String> huffmancodes = null;
 	
-	// read a text file and save the text as an array of characters (original)
+	// read a text file and save the text as an array of characters (text)
 	public void read(String path){
 		
 		try {
@@ -40,19 +41,19 @@ public class Compressor {
 		
 	}
 	
-	// do sliding window encoding on original text 
+	// do sliding window encoding on the original text. More efficient for human language (repeating strings)
 	public ArrayList<Character> swencode(ArrayList<Character> input, int windowsize, int searchlength) {	
 		return null;
 	}
 	
-	// do huffman encoding on the original text
+	// do huffman encoding on the original text. More efficient for large files with smaller character variation. For english text, codes should be smaller than 8bits.
 	public void huffman() {
 		HuffmanTree tree = new HuffmanTree();
 		tree.generateTree(getProbabilities());
 		huffmancodes = tree.generateCodes();
 	}
 	
-	// returns array of leaf nodes for huffman encoding
+	// returns array of leaf nodes for usage in huffman encoding
 	public ArrayList<HuffmanNode> getProbabilities() {
 		
 		boolean charexists = false;
@@ -69,6 +70,8 @@ public class Compressor {
 		}
 		return leafnodes;
 	}
+	
+	// OUTPUT
 	
 	public void writeToFile(String path, ArrayList<Character> content) {
 		
@@ -89,6 +92,20 @@ public class Compressor {
 		}
 	}
 	
+	//PRINTING
+	
+	public void printCodes() {
+		for (Map.Entry<Character, String> entry : huffmancodes.entrySet()) {
+		    System.out.println(entry.getKey() + " : " + entry.getValue());
+		}
+	}
+	
+	public void printProbabilities() {
+		for (HuffmanNode n: this.getProbabilities()) {
+			System.out.println(n.getCharacter() + ": " + n.getValue() + ", ");
+		}
+	}
+	
 	// GETTERS AND SETTERS
 	
 	public ArrayList<Character> getOriginal() {
@@ -99,7 +116,7 @@ public class Compressor {
 		return encodedtext;
 	}
 	
-	public HashMap<Character, ArrayList<Integer>> getHCodes() {
+	public HashMap<Character, String> getHCodes() {
 		return huffmancodes;
 	}
 	

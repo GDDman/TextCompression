@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HuffmanTree {
 	
-	private HashMap<Character, ArrayList<Integer>> codes = new HashMap<Character, ArrayList<Integer>>();
+	private HashMap<Character, String> codes = new HashMap<Character, String>();
 	private HuffmanNode root;
 	private List<HuffmanNode> leaves;
 
@@ -60,35 +61,37 @@ public class HuffmanTree {
 
 	}
 	
-	public HashMap<Character, ArrayList<Integer>> generateCodes() {
+	public HashMap<Character, String> generateCodes() {
 
 		HuffmanNode tempnode;
 		HuffmanNode parent;
-		ArrayList<Integer> code;
+		String code;
 		
 		for (HuffmanNode n: leaves) {
-			code = new ArrayList<Integer>();
+			code = "";
 			tempnode = n;
 			while((parent = tempnode.getParent()) != null) {
 				if (tempnode == parent.getright()) {
-					code.add(1);
+					code += "1";
 				}
 				if (tempnode == parent.getleft()){
-					code.add(0);
+					code += "0";
 				}
 				tempnode = parent;
 			}
-			Collections.reverse(code);
+			code = new StringBuilder(code).reverse().toString();
 			codes.put(n.getCharacter(), code);
 		}
 		return codes;
 	}
 	
+	//GETTERS 
+	
 	public HuffmanNode getRoot() {
 		return root;
 	}
 	
-	public HashMap<Character, ArrayList<Integer>> getCodes() {
+	public HashMap<Character, String> getCodes() {
 		return codes;
 	}
 	
