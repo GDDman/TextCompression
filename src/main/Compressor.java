@@ -11,6 +11,7 @@ public class Compressor {
 	private ArrayList<Character> text = new ArrayList<Character>();
 	private ArrayList<Character> encodedtext = new ArrayList<Character>();
 	private HashMap<Character, String> huffmancodes = null;
+	private byte[] bytes;
 	
 	// read a text file and save the text as an array of characters (text)
 	public void read(String path){
@@ -21,7 +22,7 @@ public class Compressor {
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
+			return;
 		}
 		
 		String currentline = "";
@@ -47,10 +48,12 @@ public class Compressor {
 	}
 	
 	// do huffman encoding on the original text. More efficient for large files with smaller character variation. For english text, codes should be smaller than 8bits.
-	public void huffman() {
+	public void huffman(String path) {
 		HuffmanTree tree = new HuffmanTree();
 		tree.generateTree(getProbabilities());
 		huffmancodes = tree.generateCodes();
+		stringToBytes();
+		bytesToFile(path);
 	}
 	
 	// returns array of leaf nodes for usage in huffman encoding
@@ -71,7 +74,81 @@ public class Compressor {
 		return leafnodes;
 	}
 	
+	// CONVERSION
+	
+	public String textToString() {
+		
+		String all = "";
+		
+		for (Character c: text) {
+			all += huffmancodes.get(c);
+		}
+		return all;
+	}
+	
+	public void stringToBytes() {
+		
+		String encoded = textToString();
+		int length = 0;
+		String temp = "";
+		int bytecounter = 0;
+		
+		if (encoded.length() % 8 == 0)
+			length = encoded.length()/8;
+		else 
+			length = (int) (encoded.length()/8) + 1;
+		
+		bytes = new byte[length];
+		
+		for (int i = 0; i < encoded.length(); i++) {
+			temp += encoded.charAt(i);
+			if (temp.length() == 8) {
+				bytes[bytecounter] = (byte) stringToSignedInt(temp);
+				temp = "";
+				bytecounter++;
+			}
+			if (i == encoded.length() - 1 && temp.length() != 8) {
+				for (int j = 0; j < 8 - temp.length(); j++) {
+					temp += "0";
+				}
+				bytes[bytecounter] = (byte) stringToSignedInt(temp);
+			}
+		}
+		
+	}
+	
+	public int stringToSignedInt(String input) {
+		
+		int num = 0;
+		for (int i = input.length() - 1; i >= 0; i--) {		
+			if (i == 0) {
+				if (input.charAt(i) == '1')
+					num -= 128;
+				break;
+			}	
+			if (input.charAt(i) == '1')
+				num += Math.pow(2, (input.length() - 1) - i);
+		}
+		return num;
+	}
+	
 	// OUTPUT
+	
+	public void bytesToFile(String path) {
+		
+		if (bytes == null) return;
+		try {
+			FileOutputStream fos = new FileOutputStream(path);
+			try {
+				fos.write(bytes);
+				fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public void writeToFile(String path, ArrayList<Character> content) {
 		
@@ -96,13 +173,19 @@ public class Compressor {
 	
 	public void printCodes() {
 		for (Map.Entry<Character, String> entry : huffmancodes.entrySet()) {
-		    System.out.println(entry.getKey() + " : " + entry.getValue());
+			if (entry.getKey() == '\n')
+				System.out.println("newline : " + entry.getValue());				
+			else 
+				System.out.println(entry.getKey() + " : " + entry.getValue());
 		}
 	}
 	
 	public void printProbabilities() {
 		for (HuffmanNode n: this.getProbabilities()) {
-			System.out.println(n.getCharacter() + ": " + n.getValue() + ", ");
+			if (n.getCharacter() == '\n')
+				System.out.println("newline : " + n.getValue() + ", ");
+			else
+				System.out.println(n.getCharacter() + ": " + n.getValue() + ", ");
 		}
 	}
 	
