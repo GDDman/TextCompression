@@ -6,16 +6,15 @@ import java.util.Map;
 
 public class Compressor {
 
-	private FileReader fr;
-	private BufferedReader br;
 	private ArrayList<Character> text = new ArrayList<Character>();
-	private ArrayList<Character> encodedtext = new ArrayList<Character>();
 	private HashMap<Character, String> huffmancodes = null;
 	private byte[] bytes;
 	
 	// read a text file and save the text as an array of characters (text)
 	public void read(String path){
 		
+		FileReader fr = null;
+		BufferedReader br = null;
 		try {
 			fr = new FileReader(path);
 			br = new BufferedReader(fr);
@@ -94,7 +93,7 @@ public class Compressor {
 		int bytecounter = 0;
 		
 		if (encoded.length() % 8 == 0)
-			length = encoded.length()/8;
+			length = encoded.length()/8 + 1;
 		else 
 			length = (int) (encoded.length()/8) + 1;
 		
@@ -114,7 +113,6 @@ public class Compressor {
 				bytes[bytecounter] = (byte) stringToSignedInt(temp);
 			}
 		}
-		
 	}
 	
 	public int stringToSignedInt(String input) {
@@ -130,6 +128,11 @@ public class Compressor {
 				num += Math.pow(2, (input.length() - 1) - i);
 		}
 		return num;
+	}
+	
+	public String getCompressionInfo() {
+		// TODO
+		return null;
 	}
 	
 	// OUTPUT
@@ -181,7 +184,7 @@ public class Compressor {
 	}
 	
 	public void printProbabilities() {
-		for (HuffmanNode n: this.getProbabilities()) {
+		for (HuffmanNode n: getProbabilities()) {
 			if (n.getCharacter() == '\n')
 				System.out.println("newline : " + n.getValue() + ", ");
 			else
@@ -193,10 +196,6 @@ public class Compressor {
 	
 	public ArrayList<Character> getOriginal() {
 		return text;
-	}
-	
-	public ArrayList<Character> getEncoded() {
-		return encodedtext;
 	}
 	
 	public HashMap<Character, String> getHCodes() {

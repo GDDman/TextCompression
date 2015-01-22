@@ -13,6 +13,7 @@ public class HuffmanNode {
 		character = c;
 	}
 	
+	// interim node without a character associated (non-leaf)
 	public HuffmanNode(int val) {
 		value = val;
 		character = null;

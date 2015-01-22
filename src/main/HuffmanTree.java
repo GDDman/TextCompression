@@ -1,20 +1,13 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class HuffmanTree {
 	
-	private HashMap<Character, String> codes = new HashMap<Character, String>();
 	private HuffmanNode root;
 	private List<HuffmanNode> leaves;
-
-	public HuffmanTree() {
-		root = null;
-	}
 	
 	//returns the root node of the tree
 	public void generateTree(ArrayList<HuffmanNode> tree) {
@@ -58,11 +51,11 @@ public class HuffmanTree {
 		}
 		
 		root = tree.get(0);
-
 	}
 	
 	public HashMap<Character, String> generateCodes() {
 
+		HashMap<Character, String> codes = new HashMap<Character, String>();
 		HuffmanNode tempnode;
 		HuffmanNode parent;
 		String code;
@@ -89,10 +82,6 @@ public class HuffmanTree {
 	
 	public HuffmanNode getRoot() {
 		return root;
-	}
-	
-	public HashMap<Character, String> getCodes() {
-		return codes;
 	}
 	
 }

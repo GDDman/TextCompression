@@ -6,7 +6,6 @@ public class Test {
 		
 		Compressor comp = new Compressor();
 		comp.read("src/res/test.txt");
-		
 		System.out.println("PROBABILITIES :");
 		comp.printProbabilities();
 		comp.huffman("src/res/encoded.txt");
@@ -15,5 +14,9 @@ public class Test {
 		comp.writeToFile("src/res/output.txt", comp.getOriginal());
 		System.out.println("TEXT : \n" + comp.textToString());
 				
+		Decompressor decomp = new Decompressor();
+		decomp.read("src/res/encoded.txt", "");
+		System.out.println(decomp.bytesToBinary());
+		
 	}
 }
