@@ -93,7 +93,7 @@ public class Compressor {
 		int bytecounter = 0;
 		
 		if (encoded.length() % 8 == 0)
-			length = encoded.length()/8 + 1;
+			length = (int) encoded.length()/8;
 		else 
 			length = (int) (encoded.length()/8) + 1;
 		
@@ -106,7 +106,7 @@ public class Compressor {
 				temp = "";
 				bytecounter++;
 			}
-			if (i == encoded.length() - 1 && temp.length() != 8) {
+			if (i == encoded.length() - 1 && temp.length() != 0) {
 				for (int j = 0; j < 8 - temp.length(); j++) {
 					temp += "0";
 				}
@@ -149,25 +149,6 @@ public class Compressor {
 				e.printStackTrace();
 			}
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public void writeToFile(String path, ArrayList<Character> content) {
-		
-		StringBuilder builder = new StringBuilder(content.size());
-		
-		for (Character c: content) {
-			builder.append(c);
-		}		
-		String output = builder.toString();
-		
-		try {
-			FileWriter fw = new FileWriter(path);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(output);
-			bw.close();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}

@@ -11,7 +11,6 @@ public class Test {
 		comp.huffman("src/res/encoded.txt");
 		System.out.println("CODES :");
 		comp.printCodes();
-		comp.writeToFile("src/res/output.txt", comp.getOriginal());
 		System.out.println("TEXT : \n" + comp.textToString());
 				
 		Decompressor decomp = new Decompressor();

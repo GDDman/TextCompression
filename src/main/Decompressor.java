@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 public class Decompressor {
 
 	private byte[] bytes = null;
+	private String fileinfo = "";
 	
 	public void read(String path, String infopath) {
 		
